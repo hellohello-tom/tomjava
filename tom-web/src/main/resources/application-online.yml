@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url : jdbc:mysql://localhost:3306/saasmall?autoconnection&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username : root
+    password : 123
+    driver-class-name : com.mysql.jdbc.Driver
+    type : com.alibaba.druid.pool.DruidDataSource
+
+  application:
+    name : bird-web-api
+
+
+mybatis-plus:
+  mapper-locations : classpath*:com/tom/dao/**/*.xml
+  typeAliasesPackage : com.tom.model
+  global-config :
+    id-type : 2
+    field-strategy : 2
+    db-column-underline : true
+    refresh-mapper : true
+    logic-delete-value : 0
+  configuration :
+   map-underscore-to-camel-case : true
+   cache-enabled : false
