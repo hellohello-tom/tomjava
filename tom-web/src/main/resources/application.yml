@@ -1,4 +1,8 @@
+server:
+  port : 7788
+
 spring:
+#  数据库默认配置
   datasource:
     url : jdbc:mysql://localhost:3306/saasmall?autoconnection&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username : root
@@ -9,6 +13,14 @@ spring:
   application:
     name : tom-web-api
 
+  #redis配置
+  redis:
+    database : 5
+    host : 192.168.1.37
+    port : 6739
+    password : tongtongmallrediss
+    timeout : 1000
+    expiration : 600
 
 mybatis-plus:
   mapper-locations : classpath*:com/tom/dao/**/*.xml
@@ -20,5 +32,7 @@ mybatis-plus:
     refresh-mapper : true
     logic-delete-value : 0
   configuration :
-   map-underscore-to-camel-case : true
-   cache-enabled : false
+    map-underscore-to-camel-case : true
+    cache-enabled : false
+
+

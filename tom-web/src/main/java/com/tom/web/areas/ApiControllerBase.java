@@ -1,17 +1,27 @@
 package com.tom.web.areas;
 
 import com.tom.core.exception.UserFriendlyException;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public abstract class ApiControllerBase {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    protected void CheckModelStatus(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            throw new UserFriendlyException(Strings.join(allErrors, '\r'));
+        }
+    }
 
 
     @ExceptionHandler(Exception.class)
@@ -25,7 +35,7 @@ public abstract class ApiControllerBase {
          * modelMap.put("httpCode", HttpCode.FORBIDDEN.value());
          * modelMap.put("msg", StringUtils.defaultIfBlank(ex.getMessage(),
          * HttpCode.FORBIDDEN.msg())); }
-         */else {
+         */ else {
             logger.error("SERVER_ERROR", ex);
 
         }
