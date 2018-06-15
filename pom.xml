@@ -36,6 +36,11 @@
         <mysql.version>5.1.46</mysql.version>
         <!--druid版本号 -->
         <druid.version>1.0.31</druid.version>
+        <!--dozer版本号 -->
+        <dozer.version>5.5.1</dozer.version>
+        <!--shiro版本号 -->
+        <apache.shiro.version>1.4.0</apache.shiro.version>
+
         <tom.version>1.0.0</tom.version>
     </properties>
 

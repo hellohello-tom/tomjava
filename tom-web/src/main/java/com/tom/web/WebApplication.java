@@ -9,7 +9,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @ComponentScan("com.tom")
-@MapperScan("com.tongtongmall.dao")
+@MapperScan("com.tom.dao")
 @EnableSwagger2
 public class WebApplication {
     public static void main(String arg[]){

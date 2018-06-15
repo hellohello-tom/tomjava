@@ -4,6 +4,9 @@ import com.tom.core.exception.UserFriendlyException;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public abstract class ApiControllerBase {
+
+
+    @Autowired
+    protected RedisTemplate redisTemplate;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 

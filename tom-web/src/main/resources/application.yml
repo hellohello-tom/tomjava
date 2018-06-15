@@ -4,7 +4,7 @@ server:
 spring:
 #  数据库默认配置
   datasource:
-    url : jdbc:mysql://localhost:3306/saasmall?autoconnection&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url : jdbc:mysql://localhost:3306/tom-java?autoconnection&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username : root
     password : 123
     driver-class-name : com.mysql.jdbc.Driver
@@ -17,8 +17,8 @@ spring:
   redis:
     database : 5
     host : 192.168.1.37
-    port : 6739
-    password : tongtongmallrediss
+    port : 6379
+    password : tongtongmallredis
     timeout : 1000
     expiration : 600
 

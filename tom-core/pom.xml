@@ -51,5 +51,12 @@
             <version>${druid.version}</version>
         </dependency>
 
+        <!--dozer-->
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>${dozer.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
