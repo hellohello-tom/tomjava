@@ -1,6 +1,8 @@
 package com.tom.web.areas.user.controllers;
 
 import com.tom.core.model.AjaxResponse;
+import com.tom.core.utils.AjaxCallBacker;
+import com.tom.core.utils.JWTUtil;
 import com.tom.service.UserService;
 import com.tom.web.areas.ApiControllerBase;
 import com.tom.web.areas.user.models.UserLoginInputDto;
@@ -23,5 +25,10 @@ public class LoginController extends ApiControllerBase {
         CheckModelStatus(bindingResult);
         userService.login(inputDto.getUserName(), inputDto.getPassWord(), inputDto.getVerCode());
         return new AjaxResponse();
+    }
+
+    @RequestMapping("/sign")
+    public AjaxResponse sign() {
+        return AjaxCallBacker.Success(JWTUtil.sign("tom", "tom"), null);
     }
 }

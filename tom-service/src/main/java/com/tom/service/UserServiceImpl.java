@@ -18,8 +18,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, Users> implemen
 
     @Override
     public Users getUser(String username) {
-        Users wrapper = new Users();
-        wrapper.setAccount(username);
-        return mapper.selectOne(wrapper);
+        Users model = new Users();
+        model.setAccount("tom");
+        model.setPassword("tom");
+        return model;
     }
 }

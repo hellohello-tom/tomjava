@@ -34,6 +34,7 @@ public class ApiAuthorizationFilter extends AuthorizationInfoFilter {
                 return true;
             } catch (AuthenticationException ex) {
                 System.out.println(ex);
+
             } catch (Exception ex) {
                 System.out.println(ex);
             }

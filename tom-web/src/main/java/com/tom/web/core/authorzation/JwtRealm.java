@@ -18,6 +18,15 @@ public class JwtRealm extends AuthorizingRealm {
     @Autowired
     UserService userService;
 
+    /**
+     * 必须重写，否则不进入realm领域事件
+     */
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof JwtToken;
+    }
+
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
@@ -34,8 +43,7 @@ public class JwtRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws
             AuthenticationException {
         if (!(authenticationToken instanceof JwtToken)) return null;
-        String token = (String) authenticationToken.getCredentials();
-        String jwtToken = ((JwtToken) authenticationToken).getJwtToken();
+        String token = (String) authenticationToken.getPrincipal();
         String userName = JWTUtil.getUsername(token);
         if (userName == null) {
             throw new AuthenticationException("User didn't existed!");
@@ -48,6 +56,6 @@ public class JwtRealm extends AuthorizingRealm {
         if (!JWTUtil.verify(token, userName, userInfo.getPassword())) {
             throw new AuthenticationException("Username or password error");
         }
-        return new SimpleAuthenticationInfo("jwt:" + jwtToken, token, getName());
+        return new SimpleAuthenticationInfo("jwt:" + token, authenticationToken.getCredentials(), getName());
     }
 }
