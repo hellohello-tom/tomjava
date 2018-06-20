@@ -12,4 +12,11 @@ public interface UserService extends BaseService<Users> {
      * @Description: 用户登录
      */
     Users login(String username, String password, String verCode);
+
+    /**
+     * @Auther: tom
+     * @Date:
+     * @Description: 用户登录
+     */
+    Users getUser(String username);
 }

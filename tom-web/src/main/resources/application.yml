@@ -21,7 +21,11 @@ spring:
     password : tongtongmallredis
     timeout : 1000
     expiration : 600
+  #热部署
+  thymeleaf:
+    cache : false
 
+#mybatis-plus配置
 mybatis-plus:
   mapper-locations : classpath*:com/tom/dao/**/*.xml
   typeAliasesPackage : com.tom.model

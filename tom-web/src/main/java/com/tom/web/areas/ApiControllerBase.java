@@ -34,7 +34,9 @@ public abstract class ApiControllerBase {
     @ExceptionHandler(Exception.class)
     public void exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex)
             throws Exception {
+        String message="";
         if (ex instanceof UserFriendlyException) {
+            message = ex.getMessage();
         } /*
          * else if (ex instanceof IllegalArgumentException) { new
          * IllegalParameterException(ex.getMessage()).handler(modelMap); }
@@ -46,7 +48,7 @@ public abstract class ApiControllerBase {
             logger.error("SERVER_ERROR", ex);
 
         }
-        String jsonResultStr = "";
+        String jsonResultStr = message;
         response.setContentType("application/json;charset=UTF-8");
         logger.info(jsonResultStr);
         response.getOutputStream().write(jsonResultStr.getBytes("UTF-8"));
