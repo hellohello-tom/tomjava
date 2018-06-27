@@ -17,6 +17,7 @@ public class UserController extends ApiControllerBase {
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public AjaxResponse login() {
+
         return new AjaxResponse();
     }
 }

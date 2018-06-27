@@ -1,65 +1,59 @@
 package com.tom.core.redis;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.util.concurrent.CountDownLatch;
+import java.time.Duration;
 
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
-    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
-                                            MessageListenerAdapter listenerAdapter) {
+    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheWriter cacheWriter = RedisCacheWriter.lockingRedisCacheWriter(connectionFactory);
 
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic("chat"));
+        RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(10))
+                .prefixKeysWith("tom:")
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
-        return container;
+        return new RedisCacheManager(cacheWriter, cacheConfiguration);
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter(Receiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        StringRedisSerializer keySerializer = new StringRedisSerializer();
+        GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer();
+        redisTemplate.setKeySerializer(keySerializer);
+        redisTemplate.setValueSerializer(valueSerializer);
+
+        return redisTemplate;
     }
 
     @Bean
-    Receiver receiver(CountDownLatch latch) {
-        return new Receiver(latch);
+    public RedisCacher redisCacher(RedisTemplate<String, Object> redisTemplate) {
+        return new RedisCacher(redisTemplate);
     }
 
     @Bean
-    CountDownLatch latch() {
-        return new CountDownLatch(1);
-    }
-
-    @Bean
-    StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
-        return new StringRedisTemplate(connectionFactory);
-    }
-
-    public class Receiver {
-
-
-        private CountDownLatch latch;
-
-        @Autowired
-        public Receiver(CountDownLatch latch) {
-            this.latch = latch;
-        }
-
-        public void receiveMessage(String message) {
-            latch.countDown();
-        }
+    @Override
+    public KeyGenerator keyGenerator() {
+        return new CacheKeyGenerator();
     }
 }

@@ -1,6 +1,7 @@
 package com.tom.web.areas;
 
 import com.tom.core.exception.UserFriendlyException;
+import com.tom.core.redis.RedisCacher;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public abstract class ApiControllerBase {
 
 
     @Autowired
-    protected RedisTemplate redisTemplate;
+    protected RedisCacher redisCacher;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -30,27 +31,27 @@ public abstract class ApiControllerBase {
         }
     }
 
-
-    @ExceptionHandler(Exception.class)
-    public void exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex)
-            throws Exception {
-        String message="";
-        if (ex instanceof UserFriendlyException) {
-            message = ex.getMessage();
-        } /*
-         * else if (ex instanceof IllegalArgumentException) { new
-         * IllegalParameterException(ex.getMessage()).handler(modelMap); }
-         * else if (ex instanceof UnauthorizedException) {
-         * modelMap.put("httpCode", HttpCode.FORBIDDEN.value());
-         * modelMap.put("msg", StringUtils.defaultIfBlank(ex.getMessage(),
-         * HttpCode.FORBIDDEN.msg())); }
-         */ else {
-            logger.error("SERVER_ERROR", ex);
-
-        }
-        String jsonResultStr = message;
-        response.setContentType("application/json;charset=UTF-8");
-        logger.info(jsonResultStr);
-        response.getOutputStream().write(jsonResultStr.getBytes("UTF-8"));
-    }
+//
+//    @ExceptionHandler(Exception.class)
+//    public void exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex)
+//            throws Exception {
+//        String message="";
+//        if (ex instanceof UserFriendlyException) {
+//            message = ex.getMessage();
+//        } /*
+//         * else if (ex instanceof IllegalArgumentException) { new
+//         * IllegalParameterException(ex.getMessage()).handler(modelMap); }
+//         * else if (ex instanceof UnauthorizedException) {
+//         * modelMap.put("httpCode", HttpCode.FORBIDDEN.value());
+//         * modelMap.put("msg", StringUtils.defaultIfBlank(ex.getMessage(),
+//         * HttpCode.FORBIDDEN.msg())); }
+//         */ else {
+//            logger.error("SERVER_ERROR", ex);
+//
+//        }
+//        String jsonResultStr = message;
+//        response.setContentType("application/json;charset=UTF-8");
+//        logger.info(jsonResultStr);
+//        response.getOutputStream().write(jsonResultStr.getBytes("UTF-8"));
+//    }
 }

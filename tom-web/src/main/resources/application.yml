@@ -13,6 +13,14 @@ spring:
   application:
     name : tom-web-api
 
+  #mvc配置
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  #不开启默认的资源处理
+  resources:
+    add-mappings: false
+
   #redis配置
   redis:
     database : 5

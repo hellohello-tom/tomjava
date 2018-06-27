@@ -1,5 +1,6 @@
 package com.tom.web.areas.user.controllers;
 
+import com.tom.core.exception.UserFriendlyException;
 import com.tom.core.model.AjaxResponse;
 import com.tom.core.utils.AjaxCallBacker;
 import com.tom.core.utils.JWTUtil;
@@ -27,8 +28,19 @@ public class LoginController extends ApiControllerBase {
         return new AjaxResponse();
     }
 
-    @RequestMapping("/sign")
+    @RequestMapping(value = "/sign", method = RequestMethod.POST)
     public AjaxResponse sign() {
+
+        redisCacher.set("test", "123");
+
         return AjaxCallBacker.Success(JWTUtil.sign("tom", "tom"), null);
+    }
+
+    @RequestMapping(value = "/sign1", method = RequestMethod.POST)
+    public AjaxResponse sign1() {
+
+        throw new UserFriendlyException("123");
+
+        //return AjaxCallBacker.Success(JWTUtil.sign("tom", "tom"), null);
     }
 }

@@ -26,7 +26,11 @@ public class JwtRealm extends AuthorizingRealm {
         return token instanceof JwtToken;
     }
 
-
+    /**
+     * @Auther: tom
+     * @Date: 2018年6月26日
+     * @Description: 授权
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
@@ -39,6 +43,11 @@ public class JwtRealm extends AuthorizingRealm {
         return simpleAuthorizationInfo;
     }
 
+    /**
+     * @Auther: tom
+     * @Date: 2018年6月26日
+     * @Description: 认证，账号信息判断，Session验证
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws
             AuthenticationException {
