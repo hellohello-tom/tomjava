@@ -1,19 +1,13 @@
 package com.tom.web.core.filters.shiro;
 
 import com.google.common.base.Strings;
-import com.tom.core.utils.HttpCode;
-import com.tom.core.utils.ReponseUtil;
-import com.tom.model.Users;
 import com.tom.web.core.authorzation.JwtToken;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Auther: tom

@@ -1,22 +1,22 @@
 package com.tom.service;
 
 import com.tom.core.service.BaseService;
-import com.tom.model.Users;
+import com.tom.model.User;
 
 
-public interface UserService extends BaseService<Users> {
-
-    /**
-     * @Auther: tom
-     * @Date:
-     * @Description: 用户登录
-     */
-    Users login(String username, String password, String verCode);
+public interface UserService extends BaseService<User> {
 
     /**
      * @Auther: tom
      * @Date:
      * @Description: 用户登录
      */
-    Users getUser(String username);
+    User login(String username, String password, String verCode);
+
+    /**
+     * @Auther: tom
+     * @Date:
+     * @Description: 获取用户信息
+     */
+    User getUser(String username);
 }

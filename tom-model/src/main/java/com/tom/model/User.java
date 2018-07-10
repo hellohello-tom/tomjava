@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.tom.core.model.AbstractModel;
 
 @TableName("users")
-public class Users extends AbstractModel {
+public class User extends AbstractModel {
 
     private String account;
 

@@ -42,8 +42,8 @@
         <apache.shiro.version>1.4.0</apache.shiro.version>
         <!--jwt版本号 -->
         <jwt.version>3.2.0</jwt.version>
-
         <tom.version>1.0.0</tom.version>
+
     </properties>
 
     <dependencies>

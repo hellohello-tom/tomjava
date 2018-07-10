@@ -2,6 +2,7 @@ package com.tom.web.areas;
 
 import com.tom.core.exception.UserFriendlyException;
 import com.tom.core.redis.RedisCacher;
+import com.tom.web.core.controller.TomControllerBase;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +17,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public abstract class ApiControllerBase {
+import static java.util.stream.Collectors.toList;
+
+public abstract class ApiControllerBase extends TomControllerBase {
 
 
     @Autowired
     protected RedisCacher redisCacher;
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
-
     protected void CheckModelStatus(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
-            throw new UserFriendlyException(Strings.join(allErrors, '\r'));
+            throw new UserFriendlyException(Strings.join(allErrors.stream().map(ObjectError::getDefaultMessage)
+                    .collect(toList()), ';'));
         }
     }
 

@@ -24,8 +24,12 @@ public class GobalExceptionHandle {
     public AjaxResponse errorHandler(Exception ex) {
         AjaxResponse result = AjaxCallBacker.Faild(ex.getMessage(), HttpCode.INTERNAL_SERVER_ERROR);
         if (ex instanceof UserFriendlyException) {
-            logger.debug(ex.getMessage());
-            result.setMessage(ex.getMessage());
+            UserFriendlyException userFriendlyException = (UserFriendlyException) ex;
+            logger.debug(userFriendlyException.getMessage());
+            result.setMessage(userFriendlyException.getMessage());
+            if (userFriendlyException.getData() != null) {
+                result.setdata(userFriendlyException.getData());
+            }
         } else if (ex instanceof NoHandlerFoundException) {
             result.setStatusCode(HttpCode.NOT_FOUND);
             result.setMessage("请求的路径不存在");

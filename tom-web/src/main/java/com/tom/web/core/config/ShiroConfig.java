@@ -2,6 +2,7 @@ package com.tom.web.core.config;
 
 import com.tom.web.core.authorzation.JwtRealm;
 import com.tom.web.core.filters.shiro.ApiAuthorizationFilter;
+import com.tom.web.core.filters.shiro.IdentityAuthorizationFilter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -42,9 +43,14 @@ public class ShiroConfig {
 
         Map<String, String> filterMap = new LinkedHashMap<>();
 
-        filterMap.put("/plugin/**", "anon");
+        filterMap.put("/admin/login.html", "anon");
+        //api相关使用jwttoken 进行判断
         filterMap.put("/api/**", "jwtfilter");
+        //后台相关权限接口认证
+        filterMap.put("/admin/**","authc");
+
         sfb.setUnauthorizedUrl("/403");
+        sfb.setLoginUrl("/admin/login.html");
         sfb.setFilterChainDefinitionMap(filterMap);
         return sfb;
     }

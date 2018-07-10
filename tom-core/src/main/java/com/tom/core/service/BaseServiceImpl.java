@@ -10,5 +10,6 @@ public abstract class BaseServiceImpl<Mapper extends AbstractRepository<TModel,I
     @Autowired
     protected  Mapper mapper;
 
+
 }
 

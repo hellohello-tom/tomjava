@@ -1,7 +1,7 @@
 package com.tom.web.core.authorzation;
 
 import com.tom.core.utils.JWTUtil;
-import com.tom.model.Users;
+import com.tom.model.User;
 import com.tom.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -34,13 +34,15 @@ public class JwtRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
-        String username = JWTUtil.getUsername(principalCollection.toString());
-        Users user = userService.getUser(username);
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        //simpleAuthorizationInfo.addRole(user.getRole());
-        //Set<String> permission = new HashSet<>(Arrays.asList(user.getPermission().split(",")));
-        //simpleAuthorizationInfo.addStringPermissions(permission);
-        return simpleAuthorizationInfo;
+    String username = JWTUtil.getUsername(principalCollection.toString());
+    User user = userService.getUser(username);
+    if(user==null) throw new AuthenticationException("用户名或密码错误");
+
+    SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+    //simpleAuthorizationInfo.addRole(user.getRole());
+    //Set<String> permission = new HashSet<>(Arrays.asList(user.getPermission().split(",")));
+    //simpleAuthorizationInfo.addStringPermissions(permission);
+    return simpleAuthorizationInfo;
     }
 
     /**
@@ -57,7 +59,7 @@ public class JwtRealm extends AuthorizingRealm {
         if (userName == null) {
             throw new AuthenticationException("User didn't existed!");
         }
-        Users userInfo = userService.getUser(userName);
+        User userInfo = userService.getUser(userName);
         if (userInfo == null) {
             throw new AuthenticationException("User didn't existed!");
         }
