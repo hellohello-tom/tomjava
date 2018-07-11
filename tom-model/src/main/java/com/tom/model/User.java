@@ -3,7 +3,7 @@ package com.tom.model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.tom.core.model.AbstractModel;
 
-@TableName("users")
+@TableName("user")
 public class User extends AbstractModel {
 
     private String account;
@@ -11,8 +11,6 @@ public class User extends AbstractModel {
     private String password;
 
     private int sex;
-
-    private int delStatus;
 
     public String getAccount() {
         return account;
@@ -36,13 +34,5 @@ public class User extends AbstractModel {
 
     public void setSex(int sex) {
         this.sex = sex;
-    }
-
-    public int getDelStatus() {
-        return delStatus;
-    }
-
-    public void setDelStatus(int delStatus) {
-        this.delStatus = delStatus;
     }
 }

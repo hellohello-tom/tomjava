@@ -11,18 +11,18 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
 
     @Override
-    public User login(String username, String password, String verCode) {
+    public User login(String username, String password) {
         //登录记录
         User userParams = new User();
         userParams.setAccount(username);
         userParams.setPassword(password);
-        User userDetail = mapper.selectOne(userParams);
-        if (userDetail == null)
-            throw new UserFriendlyException("用户名或密码错误");
-
-        //验证码验证
-        //生成redis session
-        return userDetail;
+        return mapper.selectOne(userParams);
+//        if (userDetail == null)
+//
+//
+//        //验证码验证
+//        //生成redis session
+//        return userDetail;
     }
 
     @Override

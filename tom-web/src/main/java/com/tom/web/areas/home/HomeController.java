@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController extends AdminControllerBase {
 
+    @RequestMapping(value = "/layout")
+    public String layout() {
+        return "admin/layout.html";
+    }
+
     @RequestMapping(value = "/index")
-    public String index(@RequestParam(required=false) String returnUrl, Model model) {
-        model.addAttribute("returnUrl", returnUrl+"123");
-        model.addAttribute("test1", returnUrl);
+    public String index(Model model) {
+
         return "admin/index.html";
     }
 }

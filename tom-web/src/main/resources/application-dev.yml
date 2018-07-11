@@ -52,4 +52,9 @@ mybatis-plus:
     map-underscore-to-camel-case : true
     cache-enabled : false
 
+logging:
+  config: classpath:config/logback-spring-boot.xml
+  level:
+      com.onepro.custom.mapper: DEBUG
+
 

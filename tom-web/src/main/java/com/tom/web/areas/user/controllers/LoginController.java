@@ -10,13 +10,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 public class LoginController extends AdminControllerBase {
@@ -29,31 +29,42 @@ public class LoginController extends AdminControllerBase {
      */
     @RequestMapping(value = "/login.html")
     public String login(@RequestParam(required = false) String returnUrl, Model model) {
-        model.addAttribute("returnurl", returnUrl);
+        model.addAttribute("returnUrl", returnUrl);
         return "admin/login.html";
     }
 
-    @RequestMapping(value = "/login.action", method = RequestMethod.POST)
-    public String login(@RequestBody @Validated UserLoginInputDto input, @RequestParam(required = false) String
-            returnUrl, BindingResult bindingResult, Model model) {
+    /**
+     * 登录方法
+     *
+     * @param input
+     * @param returnUrl
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/login.html", method = RequestMethod.POST)
+    public String login(@Valid UserLoginInputDto input, BindingResult bindingResult, @RequestParam(required = false)
+            String
+            returnUrl, Model model) {
         List checkResult = CheckModelStatus(bindingResult);
         if (checkResult.size() > 0) {
-            model.addAttribute("errormsg", checkResult.get(0));
-        }
-        //身份信息校验,委托给shiro 进行认证
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(input.getUserName(), input
-                .getPassWord());
-        Subject subject = SecurityUtils.getSubject();
-        try {
-            subject.login(usernamePasswordToken);
-            if (Strings.isNullOrEmpty(returnUrl)) {
-                return "admin/index.html";
-            } else {
-                return "forward:" + returnUrl;
+            model.addAttribute("errorMsg", checkResult.get(0));
+        } else {
+            //身份信息校验,委托给shiro 进行认证
+            UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(input.getUserName(), input
+                    .getPassWord());
+            Subject subject = SecurityUtils.getSubject();
+            try {
+                subject.login(usernamePasswordToken);
+                if (Strings.isNullOrEmpty(returnUrl)) {
+                    return "admin/index.html";
+                } else {
+                    return returnUrl;
+                }
+            } catch (AuthenticationException e) {
+                model.addAttribute("errorMsg", "账号或密码错误");
             }
-        } catch (AuthenticationException e) {
-            model.addAttribute("errormsg", "账号或密码错误");
-            return "admin/login.html";
         }
+        logger.debug("test");
+        return "/admin/login.html";
     }
 }

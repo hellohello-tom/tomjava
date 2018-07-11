@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 public class UserLoginInputDto implements IInputDto {
 
-    @Size(min = 1, max = 20, message = "用户名长度不正确")
+    @Size(min = 1, max = 20, message = "用户名格式不正确")
     @NotBlank(message = "用户名不能为空")
     @ValidatorPhone
     @JsonProperty(value = "username")

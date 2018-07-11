@@ -11,7 +11,7 @@ public interface UserService extends BaseService<User> {
      * @Date:
      * @Description: 用户登录
      */
-    User login(String username, String password, String verCode);
+    User login(String username, String password);
 
     /**
      * @Auther: tom
