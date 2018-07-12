@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Controller
 public class LoginController extends AdminControllerBase {
@@ -56,7 +55,7 @@ public class LoginController extends AdminControllerBase {
             try {
                 subject.login(usernamePasswordToken);
                 if (Strings.isNullOrEmpty(returnUrl)) {
-                    return "admin/index.html";
+                    return "redirect:/admin/index";
                 } else {
                     return returnUrl;
                 }
@@ -64,7 +63,6 @@ public class LoginController extends AdminControllerBase {
                 model.addAttribute("errorMsg", "账号或密码错误");
             }
         }
-        logger.debug("test");
         return "/admin/login.html";
     }
 }

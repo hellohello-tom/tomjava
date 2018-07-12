@@ -42,8 +42,11 @@
         <apache.shiro.version>1.4.0</apache.shiro.version>
         <!--jwt版本号 -->
         <jwt.version>3.2.0</jwt.version>
-        <tom.version>1.0.0</tom.version>
+        <!--fast版本号 -->
+        <alibaba.fastjson.version>1.2.46</alibaba.fastjson.version>
+        <apache.commons>3.4</apache.commons>
 
+        <tom.version>1.0.0</tom.version>
     </properties>
 
     <dependencies>

@@ -1,6 +1,8 @@
 server:
   port : 7788
 
+debug: true
+
 spring:
 #  数据库默认配置
   datasource:
@@ -53,8 +55,12 @@ mybatis-plus:
     cache-enabled : false
 
 logging:
-  config: classpath:config/logback-spring-boot.xml
-  level:
-      com.onepro.custom.mapper: DEBUG
+  config: classpath:logging/logback-spring-boot.xml
 
 
+#系统根据业务自定义的一些配置
+tom:
+  shiro:
+    session:
+      #seconds
+      expire: 12000

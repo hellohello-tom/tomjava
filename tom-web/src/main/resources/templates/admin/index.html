@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="views/shared/layout">
 <head>
     <meta charset="UTF-8"/>
-    <title>tom-java后台管理系统</title>
+    <title>tom-java background system manager</title>
 </head>
 <body>
-    <header>这是头部</header>
-        <div layout:fragment="content"></div>
-        <footer>这是底部</footer>
-    </body>
+<div layout:fragment="content">
+    <h2>我是文本内容</h2>
+</div>
+</body>
 </html>

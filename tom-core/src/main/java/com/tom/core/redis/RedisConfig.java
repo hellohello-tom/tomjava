@@ -39,9 +39,11 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
 
         StringRedisSerializer keySerializer = new StringRedisSerializer();
-        GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer();
+
         redisTemplate.setKeySerializer(keySerializer);
-        redisTemplate.setValueSerializer(valueSerializer);
+        //集成shiro时发现jackjson 对其Session有影响
+        //        GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer();
+        //        redisTemplate.setValueSerializer(valueSerializer);
 
         return redisTemplate;
     }

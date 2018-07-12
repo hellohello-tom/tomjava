@@ -1,12 +1,15 @@
 package com.tom.core.cache;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public interface ICache {
 
     Object get(final String key);
 
-    void set(final String key, final Serializable value, int seconds);
+    void set(final String key, final Serializable value, long seconds);
+
+    void set(final String key,  Object value, long seconds);
 
     void set(final String key, final Serializable value);
 
@@ -16,7 +19,11 @@ public interface ICache {
 
     void del(final String key);
 
-    Boolean expire(final String key, final int seconds);
+    void delList(Set key);
+
+    Boolean expire(final String key, final long seconds);
 
     Boolean expireAt(final String key, final long unixTime);
+
+    Set getList(final String key);
 }

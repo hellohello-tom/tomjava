@@ -4,17 +4,20 @@ import com.tom.core.cache.ICache;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class RedisCacher implements ICache {
-    private Integer EXPIRE = 600;
+    private long EXPIRE = 600;
 
     private RedisTemplate<String, Object> redisTemplate;
 
-    public RedisCacher(){}
+    public RedisCacher() {
+    }
 
-    public RedisCacher(RedisTemplate<String,Object> redisTemplate){
+    public RedisCacher(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -24,20 +27,26 @@ public class RedisCacher implements ICache {
     }
 
     @Override
-    public final void set(final String key, final Serializable value, int seconds) {
-        redisTemplate.opsForValue().set(key,value);
+    public final void set(final String key, final Serializable value, long seconds) {
+        redisTemplate.opsForValue().set(key, value);
+        expire(key, seconds);
+    }
+
+    @Override
+    public void set(String key, Object value, long seconds) {
+        redisTemplate.opsForValue().set(key, value);
         expire(key, seconds);
     }
 
     @Override
     public final void set(final String key, final Serializable value) {
-        redisTemplate.opsForValue().set(key,value,EXPIRE,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, value, EXPIRE, TimeUnit.SECONDS);
         expire(key, EXPIRE);
     }
 
     @Override
     public Boolean setIfAbsent(String key, Serializable value) {
-        return redisTemplate.opsForValue().setIfAbsent(key,value);
+        return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
 
     @Override
@@ -50,13 +59,18 @@ public class RedisCacher implements ICache {
         redisTemplate.delete(key);
     }
 
+    @Override
+    public void delList(Set key) {
+        redisTemplate.delete(key);
+    }
+
     /**
      * 在某段时间后失效
      *
      * @return
      */
     @Override
-    public final Boolean expire(final String key, final int seconds) {
+    public final Boolean expire(final String key, final long seconds) {
         return redisTemplate.expire(key, seconds, TimeUnit.SECONDS);
     }
 
@@ -70,5 +84,11 @@ public class RedisCacher implements ICache {
     @Override
     public final Boolean expireAt(final String key, final long unixTime) {
         return redisTemplate.expireAt(key, new Date(unixTime));
+    }
+
+    @Override
+    public Set getList(String key) {
+        Set collection = redisTemplate.keys("*");
+        return collection;
     }
 }
