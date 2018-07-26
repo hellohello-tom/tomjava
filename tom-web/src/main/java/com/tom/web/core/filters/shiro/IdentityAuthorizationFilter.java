@@ -2,6 +2,7 @@ package com.tom.web.core.filters.shiro;
 
 import com.tom.core.utils.ReponseUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
@@ -21,7 +22,7 @@ public class IdentityAuthorizationFilter extends AuthorizationInfoFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) {
         //todo:借助cookie 可以实现cookie与分布式session双重认证
-
+        Subject subject =getSubject(servletRequest,servletResponse);
         //分布式session内获取用户信息，判断当前session是否活跃
         return  SecurityUtils.getSubject().isAuthenticated();
     }

@@ -15,6 +15,7 @@ import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -91,6 +92,7 @@ public class ShiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<>();
 
         filterMap.put("/admin/login.html", "anon");
+        filterMap.put("/static/**", "anon");
         //api相关使用jwttoken 进行判断
         filterMap.put("/api/**", "jwtfilter");
         //后台相关权限接口认证
@@ -143,8 +145,11 @@ public class ShiroConfig {
             ("redisCacheManager") CacheManager cacheManager) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(sessionDAO);
-        sessionManager.setGlobalSessionTimeout(1800);
+        sessionManager.setSessionIdCookie(simpleCookie());
+        sessionManager.setGlobalSessionTimeout(180000);
         sessionManager.setCacheManager(cacheManager);
+        sessionManager.setDeleteInvalidSessions(true);//删除过期的session
+        sessionManager.setSessionIdCookieEnabled(true);
         return sessionManager;
     }
 
@@ -156,5 +161,11 @@ public class ShiroConfig {
     @Bean(name = "redisCacheManager")
     public CacheManager redisCacheManager() {
         return new RedisShiroCacheManager();
+    }
+
+    @Bean
+    public SimpleCookie simpleCookie() {
+        SimpleCookie simpleCookie = new SimpleCookie("REDISSESSION");
+        return simpleCookie;
     }
 }

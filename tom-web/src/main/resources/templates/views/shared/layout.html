@@ -3,10 +3,31 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
+    <link th:href="@{~/static/lib/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{~/static/lib/layui/css/global.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <header>这是头部</header>
-    <div layout:fragment="content"></div>
-    <footer>这是底部</footer>
+<div class="site-inline">
+    <div class="site-tree">
+        <ul class="layui-tree">
+            <li><h2>权限管理</h2></li>
+            <li class="site-tree-noicon ">
+                <a href="">
+                <cite>用户管理</cite>
+                </a>
+            </li>
+            <li class="site-tree-noicon ">
+                <a href="">
+                <cite>角色管理</cite>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="site-content">
+
+    </div>
+</div>
+<script th:src="@{~/static/lib/layui/layui.all.js}"></script>
 </body>
 </html>
