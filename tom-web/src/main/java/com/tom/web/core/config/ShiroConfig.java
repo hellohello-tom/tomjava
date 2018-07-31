@@ -1,12 +1,17 @@
 package com.tom.web.core.config;
 
+import com.google.common.base.Strings;
 import com.tom.core.redis.RedisCacher;
+import com.tom.model.Permission;
+import com.tom.model.dto.GetModuleRoleDto;
+import com.tom.service.sys.ModuleService;
+import com.tom.service.sys.PermissionService;
 import com.tom.web.core.authorzation.AdminRealm;
 import com.tom.web.core.authorzation.JwtRealm;
-import com.tom.web.core.cache.RedisShiroCacheManager;
-import com.tom.web.core.cache.RedisShiroSessionDAO;
 import com.tom.web.core.filters.shiro.ApiAuthorizationFilter;
 import com.tom.web.core.filters.shiro.IdentityAuthorizationFilter;
+import com.tom.web.core.shiro.cache.RedisShiroCacheManager;
+import com.tom.web.core.shiro.cache.RedisShiroSessionDAO;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -40,8 +45,17 @@ public class ShiroConfig {
     @Value("${tom.shiro.session.expire:120000}")
     private int RedisSessionExpireTime;
 
+    @Value("${tom.shiro.cache.expire:120000}")
+    private int RedisCacheExpireTime;
+
     @Resource
     RedisCacher redisCacher;
+
+    @Resource
+    ModuleService moduleService;
+
+    @Resource
+    PermissionService permissionService;
 
     @Bean(name = "jwtRealm")
     public JwtRealm getJwtRealm() {
@@ -95,10 +109,26 @@ public class ShiroConfig {
         filterMap.put("/static/**", "anon");
         //api相关使用jwttoken 进行判断
         filterMap.put("/api/**", "jwtfilter");
-        //后台相关权限接口认证
+        //后台相关动态角色权限接口认证
+        for (GetModuleRoleDto dto : moduleService.getModuleRole()) {
+            if (!Strings.isNullOrEmpty(dto.getUrl()) && !Strings.isNullOrEmpty(dto.getRoles())) {
+                String roles = "roles[" + dto.getRoles() + "]";
+                filterMap.put(dto.getUrl(), roles);
+            }
+        }
+
+        //后台相关操作权限接口认证
+        for (Permission permission : permissionService.getSysPermissionList()) {
+            if (!Strings.isNullOrEmpty(permission.getAction()) && !Strings.isNullOrEmpty(permission.getOperatorName()
+            )) {
+                String perms = "perms[" + permission.getOperatorName() + "]";
+                filterMap.put(permission.getAction(), perms);
+            }
+        }
+
         filterMap.put("/admin/**", "adminfilter");
 
-        sfb.setUnauthorizedUrl("/403");
+        sfb.setUnauthorizedUrl("/error/403.html");
         sfb.setLoginUrl("/admin/login.html");
         sfb.setFilterChainDefinitionMap(filterMap);
         return sfb;
@@ -123,6 +153,13 @@ public class ShiroConfig {
     }
 
 
+    /**
+     * 开启shiro aop注解支持.
+     * 使用代理方式;所以需要开启代码支持;
+     *
+     * @param securityManager
+     * @return
+     */
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(@Qualifier("securityManager")
                                                                                               SecurityManager
@@ -160,7 +197,7 @@ public class ShiroConfig {
 
     @Bean(name = "redisCacheManager")
     public CacheManager redisCacheManager() {
-        return new RedisShiroCacheManager();
+        return new RedisShiroCacheManager(RedisCacheExpireTime);
     }
 
     @Bean

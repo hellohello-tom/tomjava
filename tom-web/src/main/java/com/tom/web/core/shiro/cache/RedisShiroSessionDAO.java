@@ -1,9 +1,8 @@
-package com.tom.web.core.cache;
+package com.tom.web.core.shiro.cache;
 
 import com.tom.core.cache.ICache;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
-import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

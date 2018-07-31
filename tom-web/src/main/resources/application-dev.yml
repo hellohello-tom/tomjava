@@ -1,5 +1,5 @@
 server:
-  port : 7788
+  port : 7789
 
 debug: true
 
@@ -16,6 +16,7 @@ spring:
   thymeleaf:
     cache: false #开发阶段，建议关闭Thymeleaf的缓存
     mode: LEGACYHTML5 #使用遗留的html5以去掉对html标签的校验
+    prefix: classpath:/templates/
 
   application:
     name : tom-web-api
@@ -42,7 +43,7 @@ spring:
 
 #mybatis-plus配置
 mybatis-plus:
-  mapper-locations : classpath*:com/tom/dao/**/*.xml
+  mapper-locations : classpath:mappings/**/*Mapper.xml
   typeAliasesPackage : com.tom.model
   global-config :
     id-type : 2
@@ -63,4 +64,6 @@ tom:
   shiro:
     session:
       #seconds
-      expire: 12000
+      expire: 120000
+    cache:
+      expire: 120000

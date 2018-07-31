@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tom.dao.UserMapper">
+
+    <resultMap type="com.tom.model.dto.GetUserLoginDto" id="queryLogin">
+        <id column="user_id" property="id" jdbcType="VARCHAR" />
+        <id column="account" property="account" jdbcType="VARCHAR" />
+        <id column="password" property="password" jdbcType="VARCHAR" />
+        <id column="sex" property="sex" jdbcType="INTEGER" />
+        <id column="ticket_version" property="ticketVersion" jdbcType="INTEGER" />
+
+        <collection property="roles" javaType="java.util.List"
+                    ofType="com.tom.model.Role">
+            <id column="rid" property="id" jdbcType="INTEGER" />
+            <result column="display_name" property="displayName"
+                    jdbcType="VARCHAR" />
+        </collection>
+
+    </resultMap>
+    <select id="login" resultMap="queryModuleRolesMap">
+        select ur.id user_id,ur.account,ur.`password`,ur.sex,ur.ticket_version,r.id rid,r.display_name from `user` ur
+            left join user_role u_r on ur.id = u_r.user_id and u_r.del_status=0
+            left join role r on r.id = u_r.role_id and r.del_status=0
+            where ur.account = #{account,jdbcType=VARCHAR} and ur.password=#{password,jdbcType=VARCHAR}
+            and ur.del_status=0
+    </select>
+</mapper>

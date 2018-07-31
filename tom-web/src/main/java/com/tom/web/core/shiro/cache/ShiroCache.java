@@ -1,4 +1,4 @@
-package com.tom.web.core.cache;
+package com.tom.web.core.shiro.cache;
 
 import com.tom.core.cache.ICache;
 import org.apache.shiro.cache.Cache;
@@ -17,9 +17,10 @@ public class ShiroCache<K, V> implements Cache<K, V> {
     private ICache cache;
     private int globExpire = 30;
 
-    public ShiroCache(String name, ICache cache) {
+    public ShiroCache(String name, ICache cache,int globalExpire) {
         this.cacheKey = REDIS_SHIRO_CACHE + name + ":";
         this.cache = cache;
+        globExpire = globalExpire;
     }
 
 

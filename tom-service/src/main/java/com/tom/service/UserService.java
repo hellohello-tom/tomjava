@@ -2,6 +2,7 @@ package com.tom.service;
 
 import com.tom.core.service.BaseService;
 import com.tom.model.User;
+import com.tom.model.dto.GetUserLoginDto;
 
 
 public interface UserService extends BaseService<User> {
@@ -11,7 +12,7 @@ public interface UserService extends BaseService<User> {
      * @Date:
      * @Description: 用户登录
      */
-    User login(String username, String password);
+    GetUserLoginDto login(String username, String password);
 
     /**
      * @Auther: tom

@@ -2,6 +2,7 @@ package com.tom.web.core.authorzation;
 
 import com.tom.core.utils.MD5Util;
 import com.tom.model.User;
+import com.tom.model.dto.GetUserLoginDto;
 import com.tom.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -24,7 +25,7 @@ public class AdminRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        //authorizationInfo.addStringPermission("admin");
+
         return authorizationInfo;
     }
 
@@ -39,7 +40,7 @@ public class AdminRealm extends AuthorizingRealm {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         //加盐
         String encryPassword = MD5Util.MD5(String.valueOf(usernamePasswordToken.getPassword()));
-        User user = userService.login(usernamePasswordToken.getUsername(), encryPassword);
+        GetUserLoginDto user = userService.login(usernamePasswordToken.getUsername(), encryPassword);
         if (user == null)
             throw new AuthenticationException("账号或密码错误");
         //写入Session

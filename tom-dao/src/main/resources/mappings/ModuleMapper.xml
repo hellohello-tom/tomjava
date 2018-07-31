@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tom.dao.sys.ModuleMapper">
+
+    <resultMap type="com.tom.model.dto.GetModuleRoleDto" id="queryModuleRolesMap">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="url" property="url" jdbcType="VARCHAR"/>
+        <id column="roles" property="roles" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectModuleRole" resultMap="queryModuleRolesMap">
+       SELECT m.id,
+       m.url,
+       Group_concat(r.display_name SEPARATOR ',') roles
+        FROM   module m,
+               role r,
+               module_role mr
+        WHERE  m.id = mr.module_id
+               AND r.id = mr.role_id
+               AND m.del_status = 0
+               AND r.del_status = 0
+        GROUP  BY url
+    </select>
+</mapper>

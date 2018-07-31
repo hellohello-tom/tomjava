@@ -10,7 +10,9 @@ public class User extends AbstractModel {
 
     private String password;
 
-    private int sex;
+    private Integer sex;
+
+    private int ticketVersion;
 
     public String getAccount() {
         return account;
@@ -28,11 +30,19 @@ public class User extends AbstractModel {
         this.password = password;
     }
 
-    public int getSex() {
+    public Integer getSex() {
         return sex;
     }
 
     public void setSex(int sex) {
         this.sex = sex;
+    }
+
+    public int getTicketVersion() {
+        return ticketVersion;
+    }
+
+    public void setTicketVersion(int ticketVersion) {
+        this.ticketVersion = ticketVersion;
     }
 }

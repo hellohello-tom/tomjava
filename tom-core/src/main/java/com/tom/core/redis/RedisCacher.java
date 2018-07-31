@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class RedisCacher implements ICache {
-    private long EXPIRE = 600;
+    private long EXPIRE = 18000;
 
     private RedisTemplate<String, Object> redisTemplate;
 

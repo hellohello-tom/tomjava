@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
@@ -11,20 +12,25 @@
     <div class="site-tree">
         <ul class="layui-tree">
             <li><h2>权限管理</h2></li>
-            <li class="site-tree-noicon ">
+            <li class="site-tree-noicon">
                 <a href="">
-                <cite>用户管理</cite>
+                    <cite>用户管理</cite>
                 </a>
             </li>
             <li class="site-tree-noicon ">
                 <a href="">
-                <cite>角色管理</cite>
+                    <cite>角色管理</cite>
+                </a>
+            </li>
+            <li class="site-tree-noicon ">
+                <a href="">
+                    <cite>操作权限管理</cite>
                 </a>
             </li>
         </ul>
     </div>
 
-    <div class="site-content">
+    <div class="site-content" layout:fragment="content">
 
     </div>
 </div>
