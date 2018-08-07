@@ -9,6 +9,7 @@ import com.tom.dao.sys.PermissionMapper;
 import com.tom.model.Permission;
 import com.tom.model.User;
 import com.tom.model.dto.GetUserLoginDto;
+import com.tom.model.dto.GetUserLoginRoleDto;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,11 +27,34 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public GetUserLoginDto login(String username, String password) {
         //登录记录
         GetUserLoginDto userInfo = mapper.login(username, password);
+//        if (userInfo != null) {
+//            Wrapper<Permission> conditions = new EntityWrapper<>();
+//            conditions = conditions.eq("del_status", 0);
+//            if (userInfo.getRoles().size() > 0) {
+//                List<Integer> roleIds = userInfo.getRoles().stream().map(GetUserLoginRoleDto::getRid)
+//                        .collect(Collectors.toList());
+//                conditions = conditions.in("role_id", roleIds);
+//            } else {
+//                conditions = conditions.where("1=1");
+//            }
+//            conditions = conditions.orNew("user_id={0}", userInfo.getId()).groupBy("action,operator_name");
+//            List<String> permissions = permissionMapper.selectList(conditions).stream().map
+//                    (Permission::getOperatorName).collect(Collectors.toList());
+//            userInfo.setOperators(permissions);
+//        }
+        return userInfo;
+    }
+
+
+    @Override
+    public GetUserLoginDto getUserPermission(int userId) {
+        //登录记录
+        GetUserLoginDto userInfo = mapper.getUserPermission(userId);
         if (userInfo != null) {
             Wrapper<Permission> conditions = new EntityWrapper<>();
             conditions = conditions.eq("del_status", 0);
             if (userInfo.getRoles().size() > 0) {
-                List<Integer> roleIds = userInfo.getRoles().stream().map(GetUserLoginDto.GetUserLoginRoleDto::getRid)
+                List<Integer> roleIds = userInfo.getRoles().stream().map(GetUserLoginRoleDto::getRid)
                         .collect(Collectors.toList());
                 conditions = conditions.in("role_id", roleIds);
             } else {
@@ -45,10 +69,14 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(String username, String password) {
         User model = new User();
         model.setAccount("tom");
         model.setPassword("tom");
-        return model;
+        Wrapper<User> conditions = new EntityWrapper<>();
+        conditions.where("account={0} and password={1}", username, password);
+        List<User> users = mapper.selectList(conditions);
+        if (users != null && users.size() > 0) return users.get(0);
+        return null;
     }
 }

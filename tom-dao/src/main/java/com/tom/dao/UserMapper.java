@@ -15,4 +15,14 @@ public interface UserMapper extends AbstractRepository<User, Integer> {
      * @date:
      */
     GetUserLoginDto login(@Param("account") String account, @Param("password") String password);
+
+    /**
+     * 功能描述:用户登录
+     *
+     * @param:
+     * @return:
+     * @auther:
+     * @date:
+     */
+    GetUserLoginDto getUserPermission(@Param("userid")int userId);
 }

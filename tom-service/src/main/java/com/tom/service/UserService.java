@@ -14,10 +14,18 @@ public interface UserService extends BaseService<User> {
      */
     GetUserLoginDto login(String username, String password);
 
+
+    /**
+     * @Auther: tom
+     * @Date:
+     * @Description: 用户登录获取授权信息
+     */
+    GetUserLoginDto getUserPermission(int userId);
+
     /**
      * @Auther: tom
      * @Date:
      * @Description: 获取用户信息
      */
-    User getUser(String username);
+    User getUser(String username, String password);
 }

@@ -16,4 +16,6 @@ public interface PermissionService extends BaseService<Permission> {
      * @date:  
      */
     List<Permission> getSysPermissionList();
+
+
 }

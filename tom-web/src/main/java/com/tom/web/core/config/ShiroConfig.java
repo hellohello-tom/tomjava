@@ -10,6 +10,7 @@ import com.tom.web.core.authorzation.AdminRealm;
 import com.tom.web.core.authorzation.JwtRealm;
 import com.tom.web.core.filters.shiro.ApiAuthorizationFilter;
 import com.tom.web.core.filters.shiro.IdentityAuthorizationFilter;
+import com.tom.web.core.filters.shiro.RolesAuthorizationFilter;
 import com.tom.web.core.shiro.cache.RedisShiroCacheManager;
 import com.tom.web.core.shiro.cache.RedisShiroSessionDAO;
 import org.apache.shiro.cache.CacheManager;
@@ -101,6 +102,9 @@ public class ShiroConfig {
 
         filters.put("jwtfilter", new ApiAuthorizationFilter());
         filters.put("adminfilter", new IdentityAuthorizationFilter());
+        //包含角色or关系
+        filters.put("hasRoles", new RolesAuthorizationFilter());
+
         sfb.setFilters(filters);
 
         Map<String, String> filterMap = new LinkedHashMap<>();
@@ -112,7 +116,7 @@ public class ShiroConfig {
         //后台相关动态角色权限接口认证
         for (GetModuleRoleDto dto : moduleService.getModuleRole()) {
             if (!Strings.isNullOrEmpty(dto.getUrl()) && !Strings.isNullOrEmpty(dto.getRoles())) {
-                String roles = "roles[" + dto.getRoles() + "]";
+                String roles = "hasRoles[\"" + dto.getRoles() + "\"]";
                 filterMap.put(dto.getUrl(), roles);
             }
         }
@@ -142,7 +146,7 @@ public class ShiroConfig {
             @Qualifier("redisCacheManager") CacheManager redisCacheManager) {
         DefaultWebSecurityManager dwm = new DefaultWebSecurityManager();
         Collection<Realm> realmList = new ArrayList<>();
-        realmList.add(jwtRealm);
+        //realmList.add(jwtRealm);
         realmList.add(adminRealm);
         dwm.setRealms(realmList);
 

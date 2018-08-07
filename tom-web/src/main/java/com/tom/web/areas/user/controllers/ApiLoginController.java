@@ -30,7 +30,7 @@ public class ApiLoginController extends ApiControllerBase {
     public AjaxResponse login(@RequestBody @Validated UserLoginInputDto inputDto, BindingResult bindingResult) {
         CheckModelStatus(bindingResult);
         AjaxResponse ajaxResponse = AjaxCallBacker.Faild();
-        User user =userService.getUser(inputDto.getUserName());
+        User user =userService.getUser(inputDto.getUserName(),"");
 
         String sign =JWTUtil.sign(user.getAccount(), user.getPassword());
         Map data = new HashMap<String,String>();

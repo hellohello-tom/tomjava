@@ -1,8 +1,10 @@
 package com.tom.model.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GetUserLoginDto {
+public class GetUserLoginDto implements Serializable {
+
 
     private Integer id;
 
@@ -76,25 +78,4 @@ public class GetUserLoginDto {
         this.operators = operators;
     }
 
-    public class GetUserLoginRoleDto {
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        public void setDisplayName(String displayName) {
-            this.displayName = displayName;
-        }
-
-        public int getRid() {
-            return rid;
-        }
-
-        public void setRid(int rid) {
-            this.rid = rid;
-        }
-
-        private String displayName;
-
-        private int rid;
-    }
 }

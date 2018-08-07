@@ -1,13 +1,16 @@
 package com.tom.service.sys;
 
+import com.baomidou.mybatisplus.entity.Column;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.tom.core.service.BaseServiceImpl;
 import com.tom.dao.sys.PermissionMapper;
 import com.tom.model.Permission;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PermissionServiceImpl extends BaseServiceImpl<PermissionMapper, Permission> implements PermissionService {
     
     /**
@@ -22,7 +25,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<PermissionMapper, Per
     @Override
     public List<Permission> getSysPermissionList() {
         Wrapper<Permission> conditions = new EntityWrapper<>();
-        conditions.eq("del_status", 0).groupBy("action,operator_name");
+        conditions.setSqlSelect("operator_name","action").eq("del_status", 0).groupBy("action,operator_name");
         return mapper.selectList(conditions);
     }
 }

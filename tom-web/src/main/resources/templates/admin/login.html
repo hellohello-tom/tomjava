@@ -53,5 +53,11 @@
 </div>
 
 <script th:src="@{~/static/lib/layui/layui.all.js}"></script>
+<script th:if="${errorMsg!=''}" type="text/javascript">
+    layer.msg('用户名密码错误', {
+        offset: '15px'
+        ,icon: 2
+    });
+</script>
 </body>
 </html>

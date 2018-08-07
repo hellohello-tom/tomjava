@@ -35,7 +35,7 @@ public class JwtRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
     String username = JWTUtil.getUsername(principalCollection.toString());
-    User user = userService.getUser(username);
+    User user = userService.getUser(username,"");
     if(user==null) throw new AuthenticationException("用户名或密码错误");
 
     SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
@@ -59,7 +59,7 @@ public class JwtRealm extends AuthorizingRealm {
         if (userName == null) {
             throw new AuthenticationException("User didn't existed!");
         }
-        User userInfo = userService.getUser(userName);
+        User userInfo = userService.getUser(userName,"");
         if (userInfo == null) {
             throw new AuthenticationException("User didn't existed!");
         }

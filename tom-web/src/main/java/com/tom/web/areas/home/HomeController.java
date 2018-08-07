@@ -1,6 +1,7 @@
 package com.tom.web.areas.home;
 
 import com.tom.web.areas.AdminControllerBase;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,6 @@ public class HomeController extends AdminControllerBase {
 
     @RequestMapping(value = "/index")
     public String index(Model model) {
-
         return "admin/index.html";
     }
 }
