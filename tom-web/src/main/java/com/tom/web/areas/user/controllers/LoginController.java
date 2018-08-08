@@ -27,8 +27,10 @@ public class LoginController extends AdminControllerBase {
      * @return
      */
     @RequestMapping(value = "/login.html")
-    public String login(@RequestParam(required = false) String returnUrl, Model model) {
+    public String login(@RequestParam(required = false) String returnUrl,
+                        @RequestParam(required = false) String errorMsg, Model model) {
         model.addAttribute("returnUrl", returnUrl);
+        model.addAttribute("errorMsg", errorMsg);
         return "admin/login.html";
     }
 

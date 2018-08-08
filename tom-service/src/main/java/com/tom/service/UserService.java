@@ -20,7 +20,7 @@ public interface UserService extends BaseService<User> {
      * @Date:
      * @Description: 用户登录获取授权信息
      */
-    GetUserLoginDto getUserPermission(int userId);
+    GetUserLoginDto getUserPermission(String account);
 
     /**
      * @Auther: tom

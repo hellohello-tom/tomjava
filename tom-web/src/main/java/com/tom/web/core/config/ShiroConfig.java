@@ -13,6 +13,11 @@ import com.tom.web.core.filters.shiro.IdentityAuthorizationFilter;
 import com.tom.web.core.filters.shiro.RolesAuthorizationFilter;
 import com.tom.web.core.shiro.cache.RedisShiroCacheManager;
 import com.tom.web.core.shiro.cache.RedisShiroSessionDAO;
+import com.tom.web.core.shiro.config.CustomizedModularRealmAuthenticator;
+import com.tom.web.core.shiro.config.CustomizedShiroFilterFactoryBean;
+import org.apache.shiro.authc.AbstractAuthenticator;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -93,7 +98,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") SecurityManager
                                                                     securityManager) {
 
-        ShiroFilterFactoryBean sfb = new ShiroFilterFactoryBean();
+        CustomizedShiroFilterFactoryBean sfb = new CustomizedShiroFilterFactoryBean();
         sfb.setSecurityManager(securityManager);
 
         sfb.setLoginUrl("/login");
@@ -145,15 +150,23 @@ public class ShiroConfig {
             @Qualifier("sessionManager") SessionManager sessionManager,
             @Qualifier("redisCacheManager") CacheManager redisCacheManager) {
         DefaultWebSecurityManager dwm = new DefaultWebSecurityManager();
+
+        dwm.setAuthenticator(getModularRealmAuthenticator());
         Collection<Realm> realmList = new ArrayList<>();
+        //多个realm之间需要全部验证通过才能进行下一步
         //realmList.add(jwtRealm);
         realmList.add(adminRealm);
         dwm.setRealms(realmList);
-
         dwm.setSessionManager(sessionManager);
         dwm.setCacheManager(redisCacheManager);
-        //dwm.setCacheManager(getCacheManager());
         return dwm;
+    }
+
+    @Bean
+    public ModularRealmAuthenticator getModularRealmAuthenticator() {
+        CustomizedModularRealmAuthenticator customizedModularRealmAuthenticator = new CustomizedModularRealmAuthenticator();
+        customizedModularRealmAuthenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+        return new CustomizedModularRealmAuthenticator();
     }
 
 

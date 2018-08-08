@@ -24,5 +24,5 @@ public interface UserMapper extends AbstractRepository<User, Integer> {
      * @auther:
      * @date:
      */
-    GetUserLoginDto getUserPermission(@Param("userid")int userId);
+    GetUserLoginDto getUserPermission(@Param("account")String account);
 }

@@ -9,8 +9,7 @@ import javax.servlet.ServletResponse;
 public class RolesAuthorizationFilter extends AuthorizationFilter {
 
     @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws
-            Exception {
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         Subject subject = getSubject(request, response);
 
         String[] rolesArray = (String[]) mappedValue;

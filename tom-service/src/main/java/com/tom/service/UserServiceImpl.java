@@ -47,9 +47,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
 
     @Override
-    public GetUserLoginDto getUserPermission(int userId) {
+    public GetUserLoginDto getUserPermission(String account) {
         //登录记录
-        GetUserLoginDto userInfo = mapper.getUserPermission(userId);
+        GetUserLoginDto userInfo = mapper.getUserPermission(account);
         if (userInfo != null) {
             Wrapper<Permission> conditions = new EntityWrapper<>();
             conditions = conditions.eq("del_status", 0);

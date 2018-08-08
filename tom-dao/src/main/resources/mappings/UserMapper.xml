@@ -29,7 +29,7 @@
         select ur.id user_id,ur.account,ur.`password`,ur.sex,ur.ticket_version,r.id rid,r.display_name from `user` ur
             left join user_role u_r on ur.id = u_r.user_id and u_r.del_status=0
             left join role r on r.id = u_r.role_id and r.del_status=0
-            where ur.ID = #{userid,jdbcType=INTEGER}
+            where ur.account = #{account,jdbcType=VARCHAR}
             and ur.del_status=0
     </select>
 </mapper>

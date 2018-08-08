@@ -1,5 +1,6 @@
 package com.tom.web.core.authorzation;
 
+import com.google.common.base.Strings;
 import com.tom.core.utils.MD5Util;
 import com.tom.model.User;
 import com.tom.model.dto.GetUserLoginDto;
@@ -26,15 +27,15 @@ public class AdminRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        int userId = (int) principals.getPrimaryPrincipal();
-        GetUserLoginDto userInfo = userService.getUserPermission(userId);
+        String account = (String) principals.getPrimaryPrincipal();
+        if (Strings.isNullOrEmpty(account)) return null;
+        GetUserLoginDto userInfo = userService.getUserPermission(account);
         for (GetUserLoginRoleDto roleDto : userInfo.getRoles()) {
             authorizationInfo.addRole(roleDto.getDisplayName());
         }
         for (String perms : userInfo.getOperators()) {
             authorizationInfo.addStringPermission(perms);
         }
-
         return authorizationInfo;
     }
 
@@ -55,7 +56,7 @@ public class AdminRealm extends AuthorizingRealm {
         //写入Session
 
         return new SimpleAuthenticationInfo(
-                user.getId(), usernamePasswordToken.getPassword(), getName());
+                user.getAccount(), usernamePasswordToken.getPassword(), getName());
 
     }
 }
